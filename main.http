@@ -1,0 +1,21 @@
+POST http://localhost:5000/admin/createadmin
+Content-Type: application/json
+
+{
+    "name":"admin",
+    "password":"adminadmin",
+    "email":"a@a",
+    "date":"2021-06-09",
+    "userType":"admin"
+}
+###
+POST http://localhost:5000/admin/loginadmin
+Content-Type: application/json
+
+{
+    "name":"admin",
+    "password":"adminadmin"
+}
+###
+GET http://localhost:5000/admin/
+###
