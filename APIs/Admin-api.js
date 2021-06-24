@@ -5,6 +5,7 @@ const bcryptjs=require('bcryptjs')
 const jwt=require('jsonwebtoken')
 const adminAPI=exp.Router()
 const multerObj=require('./middlewares/Cloudinary')
+require('dotenv').config()
 // patching API
 adminAPI.use(exp.json())
 let adminCollectionObj;
@@ -46,7 +47,7 @@ adminAPI.post("/login",expressErrorHandler(async(req,res)=>{
         if(pwstatus===false){
             res.send({message:"invalid password"})
         }else{
-            let token= await jwt.sign({name:user.name},'abcdef',{expiresIn:120})
+            let token= await jwt.sign({name:user.name},process.env.secret,{expiresIn:120})
             delete dbuser.password
             res.send({message:"login successfull",token:token,user:dbuser})
         }

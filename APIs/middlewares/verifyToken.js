@@ -1,9 +1,10 @@
 const jwt=require("jsonwebtoken")
+require('dotenv').config()
 const checkToken=(req,res,next)=>{
     try{
         // Get token from header
         let token=req.headers.authorization.split(" ")[1]
-        jwt.verify(token,"abcdef")
+        jwt.verify(token,process.env.secret)
         next()
     }
     catch(err){

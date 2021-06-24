@@ -2,11 +2,12 @@
 const exp=require('express')
 const app=exp()
 const path=require('path')
+require('dotenv').config()
 // connect frontend and backend
 app.use(exp.static(path.join(__dirname,'./build/')))
 // Connect to DB
 const mongoClient=require('mongodb').MongoClient
-const databaseUrl="mongodb+srv://mongoDB1:mongoDB1@mongopractice.ywdkh.mongodb.net/mongoPractice?retryWrites=true&w=majority"
+const databaseUrl=process.env.databaseUrl
 mongoClient.connect(databaseUrl,{useNewUrlParser:true,useUnifiedTopology:true},(err,client)=>{
     if(err){
         console.log("err in db connection",err)
@@ -44,7 +45,7 @@ app.get('/*', (req, res)=> {
   })
 
 // assign port
-const port=5000
+const port=process.env.PORT
 app.listen(port,()=>{
     console.log(`server started on ${port}`)
 })

@@ -6,7 +6,7 @@ const expressErrorHandler=require('express-async-handler')
 const userAPI=exp.Router()
 const checkToken=require('./middlewares/verifyToken')
 const multerObj=require('./middlewares/Cloudinary')
-
+require('dotenv').config()
 // parching API
 userAPI.use(exp.json())
 let userCollectionObj;
@@ -114,7 +114,7 @@ userAPI.post("/login",expressErrorHandler(async(req,res)=>{
         if(pwstatus===false){
             res.send({message:"invalid password"})
         }else{
-            let token= await jwt.sign({name:user.name},'abcdef',{expiresIn:120})
+            let token= await jwt.sign({name:user.name},process.env.secret,{expiresIn:120})
             delete dbuser.password
             res.send({message:"login successfull",token:token,user:dbuser})
         }
