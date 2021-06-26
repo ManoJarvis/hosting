@@ -4,7 +4,7 @@ import Login from './components/Login'
 import Register from './components/Register'
 import Test from './components/Test'
 import UserProfile from './components/UserProfile'
-import AdminProfile from './components/adminProfile';
+import AdminProfile from './components/AdminProfile';
 import Products from './components/Products';
 import {BrowserRouter,Link,Switch,Route,Redirect} from 'react-router-dom'
 import { useState } from 'react';
