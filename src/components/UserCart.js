@@ -1,11 +1,10 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import '../App.css'
 import emptyCart from '../imgs/emptyCart.png'
 function UserCart(props){
     // Getting cart details from the props
     let cart=props.cartObj
-    let [cartObj,setCartObj]=useState([])
+    let [cartObj,setCartObj]=useState('')
     useEffect(()=>{
         // setting cart items to cartObj
         setCartObj(cart)    

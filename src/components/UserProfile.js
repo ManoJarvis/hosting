@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
-import {useHistory, useParams} from 'react-router-dom'
+import { useHistory, useParams, useRouteMatch} from 'react-router-dom'
 import {BrowserRouter,Link,Switch,Route,Redirect} from 'react-router-dom'
 import '../App.css'
 import axios from 'axios';
 import ViewProduct from './products/ViewProduct';
 import UserCart from './UserCart';
 function UserProfile(){
-    let history=useHistory();
-    let url=useParams()
     let [user,setUser]=useState({})
     let [cartObj,setCartObj]=useState([])
     let [cartLength,setCartLength]=useState(0)
-    let [stateMonitor,setStateMonitor]=useState(0)
+    let [stateMonitor,setStateMonitor]=useState(1)
+    let pathInfo=useRouteMatch()
+    let history=useHistory()
      // For finding cart items and passing it to the UserCart
     useEffect(()=>{
         setUser(JSON.parse(localStorage.getItem('user')))
@@ -19,22 +19,25 @@ function UserProfile(){
         axios.get(`/users/getproducts/${user.name}`)
             .then(res=>{
                 setCartObj(res.data.message.products)
-                setCartLength(res.data.message.products.length)
+                if(cartObj!==[]){
+                    setCartLength(res.data.message.products.length)
+                }
             })
             .catch(err=>console.log(err))
-    },[url.name,stateMonitor])
+    },[stateMonitor])
     
     // Function to add product to cart
     const addProductToCart=(prdObj)=>{
         let name=user.name
         let newObj={name,prdObj}
-        setStateMonitor(stateMonitor+1)
+       
         // Make post req
         axios.post('/users/addtocart',newObj)
         .then(res=>{
             let responseObj=res.data
             alert(responseObj.message)
-            // history.push('/cart')
+            setStateMonitor(stateMonitor+1)
+            history.push(`${pathInfo.url}/cart`)
         })
         .catch(err=>console.log(err))
     }
@@ -62,22 +65,22 @@ function UserProfile(){
         <BrowserRouter>
         <ul class="nav nav-pills nav-fill bg-light p-1 shadow-lg rounded">
         <li class="nav-item ms-3 bg-dark rounded">
-            <Link className="nav-link text-light" to="/viewproducts">VIEW PRODUCTS</Link>
+            <Link className="nav-link text-light" to={`${pathInfo.url}/viewproducts`}>VIEW PRODUCTS</Link>
         </li>
         <li class="nav-item ms-3 bg-dark rounded">
-            <Link className="nav-link text-light" to="/cart">CART
+            <Link className="nav-link text-light" to={`${pathInfo.url}/cart`}>CART
             <span className="text-light"> ({cartLength})</span></Link>
         </li>    
         </ul>
       <Switch>
-        <Route path="/viewproducts">
+        <Route path={`${pathInfo.url}/viewproducts`}>
           <ViewProduct addProductToCart={addProductToCart} />
         </Route>
-        <Route path="/cart">
+        <Route path={`${pathInfo.url}/cart`}>
           <UserCart cartObj={cartObj}/>
         </Route>
-        <Route path="/">
-          <Redirect to="/viewproducts" />
+        <Route path='/'>
+          <Redirect to={`${pathInfo.url}/viewproducts`} />
         </Route>
        </Switch>
         </BrowserRouter>

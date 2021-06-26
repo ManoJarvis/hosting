@@ -23,9 +23,6 @@ function App() {
       {/* Nav bar */}
        <ul className="nav justify-content-center">
        <li className="nav-item">
-           <Link className="nav-link text-light" to="/products">PRODUCTS</Link>
-         </li>
-       <li className="nav-item">
            <Link className="nav-link text-light" to="/test">TEST</Link>
          </li>
          <li className="nav-item">
@@ -47,9 +44,6 @@ function App() {
 
       {/* Routing */}
       <Switch>
-      <Route path="/products">
-            <Products />
-      </Route>
       <Route path="/test">
           <Test />
         </Route>
