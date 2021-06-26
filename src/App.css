@@ -1,3 +1,9 @@
 .icn{
     border-radius: 50%;
 }
+table,th,td{
+    border: solid 8px #2E4053;
+}
+.cartEmpty{
+    background-color: #2E4053;
+}

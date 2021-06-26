@@ -10,9 +10,11 @@ const multerObj=require('./middlewares/Cloudinary')
 // parching API
 userAPI.use(exp.json())
 let userCollectionObj;
+let userCartCollectionObj;
 // Middleware for setting usercollection obj
 userAPI.use('/',(req,res,next)=>{
     userCollectionObj=req.app.get("userCollectionObj")
+    userCartCollectionObj=req.app.get("userCartCollectionObj")
     next()
 })
 
@@ -120,6 +122,48 @@ userAPI.post("/login",expressErrorHandler(async(req,res)=>{
         }
     }
 }))
+
+// Add Product to cart
+userAPI.post('/addtocart',expressErrorHandler(async(req,res)=>{
+    let prd=req.body
+    // Checking weather user has prd or not
+    let prdPresent=await userCartCollectionObj.findOne({name:prd.name})
+    if(prdPresent===null){
+        // IF user has no prd
+        userCartCollectionObj.insertOne({name:prd.name,products:[prd.prdObj]})
+        res.send({message:"New Product Added"})
+    }else{
+        // If user has prd
+        prdPresent.products.push(prd.prdObj)
+        await userCartCollectionObj.updateOne({name:prd.name},{$set:{...prdPresent}})
+        res.send({message:"product added"})
+    }
+}))
+
+// To display prd in Cart
+
+userAPI.get('/getproducts/:name',expressErrorHandler(async(req,res)=>{
+    let name=req.params.name
+    let prd= await userCartCollectionObj.findOne({name:name})
+    if(prd===null){
+        res.send({message:"product no found"})
+    }else{
+        res.send({message:prd})
+    }
+}))
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Testing
 userAPI.get('/test',checkToken,(req,res)=>{
