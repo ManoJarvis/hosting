@@ -18,10 +18,12 @@ mongoClient.connect(databaseUrl,{useNewUrlParser:true,useUnifiedTopology:true},(
         let userCollectionObj=databaseObj.collection("usercollection")
         let productCollectionObj=databaseObj.collection("productcollection")
         let adminCollectionObj=databaseObj.collection("admincollection")
+        let userCartCollectionObj=databaseObj.collection("usercartcollection")
         // Sharing collection obj to API
         app.set("userCollectionObj",userCollectionObj)
         app.set("productCollectionObj",productCollectionObj)
         app.set("adminCollectionObj",adminCollectionObj)
+        app.set("userCartCollectionObj",userCartCollectionObj)
         console.log(" Database connected")
     }
 })
@@ -45,7 +47,7 @@ app.get('/*', (req, res)=> {
   })
 
 // assign port
-const port=process.env.PORT
+const port=process.env.PORT || 8080;
 app.listen(port,()=>{
     console.log(`server started on ${port}`)
 })

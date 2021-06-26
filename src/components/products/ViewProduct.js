@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-function ViewProduct(){
+function ViewProduct(props){
+    // Props to add product to cart
+    let addProductToCart=props.addProductToCart;
     let [productlist,setProductList]=useState([])
     let [user,setuser]=useState({})
     useEffect(()=>{
@@ -27,8 +29,10 @@ function ViewProduct(){
                                     <p className="card-text">PRICE: {prdObj.price}</p>
                                     {
                                         user.userType==="user"?
-                                        <a href="" className="btn btn-dark float-end">ADD TO CART</a>:
-                                        <p></p>
+                                        <button className="btn btn-dark float-end"
+                                         onClick={()=>addProductToCart(prdObj)}>ADD TO CART</button>:
+                                         <button className="btn btn-dark float-end"
+                                         >EDIT/DELETE</button>
                                     }
                                 </div>
                             </div>
